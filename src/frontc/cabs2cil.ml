@@ -822,7 +822,7 @@ module BlockChunk =
         | Set (l, e, loc, eloc) -> Set (l, e, doLoc loc, doLoc eloc)
         | VarDecl (v, loc) -> VarDecl (v, doLoc loc)
         | Call (l, f, a, loc, eloc) -> Call (l, f, a, doLoc loc, doLoc eloc)
-        | Asm (a, b, c, d, e, loc) -> Asm (a, b, c, d, e, doLoc loc)
+        | Asm (a, b, c, d, e, f, loc) -> Asm (a, b, c, d, e, f, doLoc loc)
 
       (** Change all stmt and instr locs to synthetic, except the first one.
           Expressions/initializers that expand to multiple instructions cannot have intermediate locations referenced. *)
@@ -6928,7 +6928,7 @@ and doStatement (s : A.statement) : chunk =
 	      (tmpls, outs', ins', clobs)
 	in
         !stmts @@
-        (i2c (Asm(attr', tmpls', outs', ins', clobs', loc')))
+        (i2c (Asm(attr', tmpls', outs', ins', clobs', [], loc')))
 
   with e when continueOnError -> begin
     (ignore (E.log "Error in doStatement (%s)\n" (Printexc.to_string e)));

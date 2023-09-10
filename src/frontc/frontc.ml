@@ -106,6 +106,8 @@ let args : (string * Arg.spec * string) list =
 exception ParseError of string
 exception CabsOnly
 
+let resetErrors () = E.hadErrors := false
+
 (* parse, and apply patching *)
 let rec parse_to_cabs fname =
 begin
@@ -119,8 +121,8 @@ begin
 
   (* now parse the file we came here to parse *)
   let cabs = parse_to_cabs_inner fname in
-  if !E.hadErrors then
-    E.s (E.error "There were parsing errors in %s" fname);
+  if !E.hadErrors then 
+    (E.s (E.error "There were parsing errors in %s" fname));
 
   (* and apply the patch file, return transformed file *)
   let patched = match !patchFile with
